@@ -31,10 +31,6 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
     private Drawable thumb;
     private Drawable thumbPressed;
 
-//    private static final int[] TOUCH_DOWN_STATE_SET = {
-//            R.attr.state_touch_down
-//    };
-
     // [0, 1]
     private float progress[] = new float[2];
     private boolean[] thumbIsDown = new boolean[2];
@@ -65,19 +61,22 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
     //endregion
 
     private void init(AttributeSet attrs, int defStyle) {
-        Log.d("init touchOffset " + touchOffset);
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.IntervalSliderView, defStyle, 0);
         try {
             thumbSize = typedArray.getDimensionPixelSize(R.styleable.IntervalSliderView_thumbSize, thumbSize);
             thumbPressedSize = typedArray.getDimensionPixelSize(R.styleable.IntervalSliderView_thumbPressedSize, thumbPressedSize);
             touchOffset = typedArray.getDimensionPixelSize(R.styleable.IntervalSliderView_touchOffset, touchOffset);
-            offset = typedArray.getDimensionPixelSize(R.styleable.IntervalSliderView_offset, offset);
+
+            // if offset not specified set half of maximum size of thumb normal/pressed
+            if (typedArray.hasValue(R.styleable.IntervalSliderView_offset))
+                offset = typedArray.getDimensionPixelSize(R.styleable.IntervalSliderView_offset, offset);
+            else
+                offset = (int) Math.ceil(0.5f * Math.max(thumbSize, thumbPressedSize));
 
             backgroundDrawableResourceId = typedArray.getResourceId(R.styleable.IntervalSliderView_backgroundDrawable, backgroundDrawableResourceId);
             selectionDrawableResourceId = typedArray.getResourceId(R.styleable.IntervalSliderView_selectionDrawable, selectionDrawableResourceId);
             thumbDrawableResourceId = typedArray.getResourceId(R.styleable.IntervalSliderView_thumbDrawable, thumbDrawableResourceId);
             thumbPressedDrawableResourceId = typedArray.getResourceId(R.styleable.IntervalSliderView_thumbPressedDrawable, thumbPressedDrawableResourceId);
-
         } finally {
             typedArray.recycle();
         }
@@ -86,7 +85,6 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        Log.d("onAttachedToWindow");
         background = getContext().getResources().getDrawable(backgroundDrawableResourceId);
         selection = getContext().getResources().getDrawable(selectionDrawableResourceId);
         thumb = getContext().getResources().getDrawable(thumbDrawableResourceId);
@@ -97,7 +95,6 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        Log.d("onDetachedToWindow");
         setOnTouchListener(null);
     }
 
@@ -114,14 +111,10 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
         int paddingRight = getPaddingRight();
         int paddingBottom = getPaddingBottom();
 
-        Log.d("onDraw paddingLeft " + paddingLeft + " paddingTop " + paddingTop + " paddingRight " + paddingRight + " paddingBottom " + paddingBottom);
-
         int contentWidth = getWidth() - paddingLeft - paddingRight - 2 * offset;
         int contentHeight = getHeight() - paddingTop - paddingBottom;
 
-        Log.d("onDraw contentWidth " + contentWidth + " contentHeight " + contentHeight);
-
-        background.setBounds(getPaddingLeft() + offset, getPaddingTop(), getPaddingLeft() + contentWidth, getPaddingTop() + contentHeight);
+        background.setBounds(getPaddingLeft() + offset, getPaddingTop(), getPaddingLeft() + offset + contentWidth, getPaddingTop() + contentHeight);
         background.draw(canvas);
 
         int[] thumbX = new int[]{
@@ -158,8 +151,6 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        Log.d("onMeasure widthMode " + widthMode + " heightMode " + heightMode + " widthSize " + widthSize + " heightSize " + heightSize);
-
         if (widthMode == MeasureSpec.EXACTLY || widthMode == MeasureSpec.AT_MOST) {
             retWidth = widthSize;
         } else {
@@ -183,25 +174,12 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        Log.d("onTouch " + event.getAction());
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//            mPreTouchDownState = background.getState();
-//            background.setState(View.PRESSED_ENABLED_STATE_SET);
-////            invalidate();
-//        }
-//
-//        if (event.getAction() == MotionEvent.ACTION_UP) {
-//            background.setState(mPreTouchDownState);
-////            invalidate();
-//        }
-
         final int action = MotionEventCompat.getActionMasked(event);
         final int pointerIndex = MotionEventCompat.getActionIndex(event);
         final int pointerCount = event.getPointerCount();
         int pointerId = event.getPointerId(pointerIndex);
 
         Log.d("onTouch " + Utils.actionToString(action) + " (" + pointerId + ")" + pointerIndex + "/" + pointerCount);
-
         final int x = (int) event.getX(pointerIndex);
         final int y = (int) event.getY(pointerIndex);
 
@@ -234,8 +212,6 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
                     pointerDownX[thumbToTrack] = x;
                     pointerDownY[thumbToTrack] = y;
                 }
-
-//                direction = Direction.UNKNOWN;
             }
             break;
 
@@ -253,24 +229,6 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
                                 progress[i] = 0;
                             if (progress[i] > 1)
                                 progress[i] = 1;
-
-//                            int dx = pointerDownX[i] - tx;
-//                            int dy = pointerDownY[i] - ty;
-//
-//                            if (direction == Direction.UNKNOWN && (Math.abs(dx) > DIRECTION_DETECTION_GAP || Math.abs(dy) > DIRECTION_DETECTION_GAP)) {
-//                                if (Math.abs(dy) > Math.abs(dx)) {
-//                                    direction = Direction.VERTICAL;
-//                                    return false;
-//                                } else {
-//                                    direction = Direction.HORIZONTAL;
-//
-//                                    //значит, скроллить нельзя
-//                                    ScrollView underlyingScrollView = this.underlyingScrollView();
-//                                    if (underlyingScrollView != null) {
-//                                        underlyingScrollView.requestDisallowInterceptTouchEvent(true);
-//                                    }
-//                                }
-//                            }
                         }
 
                         if (i == 0 && progress[0] > progress[1])
@@ -303,9 +261,6 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
         }
 
         postInvalidate();
-
-        Log.d("value changed " + progress[0] + " " + progress[1] + " listener " + listener + " this " + this);
-
         if (listener != null)
             listener.onValueChanged(this, progress[0], progress[1]);
 
@@ -323,7 +278,6 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
     //region save/restore
     @Override
     public Parcelable onSaveInstanceState() {
-        Log.d("interval_slider onSaveInstanceState");
         Bundle bundle = new Bundle();
         bundle.putParcelable(BUNDLE_SUPER_INSTANCE_STATE, super.onSaveInstanceState());
         bundle.putFloatArray(BUNDLE_INTERVAL_SLIDER_PROGRESS, progress);
@@ -332,7 +286,6 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
-        Log.d("interval_slider onRestoreInstanceState");
         if (state instanceof Bundle) {
             Bundle bundle = (Bundle) state;
             progress = bundle.getFloatArray(BUNDLE_INTERVAL_SLIDER_PROGRESS);
@@ -363,12 +316,10 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
 
     public void setMinProgress(float value) {
         progress[0] = getValidProgress(value);
-        Log.d("setMinProgress " + value + " -> " + progress[0]);
     }
 
     public void setMaxProgress(float value) {
         progress[1] = getValidProgress(value);
-        Log.d("setMaxProgress " + value + " -> " + progress[1]);
     }
     //endregion
 }

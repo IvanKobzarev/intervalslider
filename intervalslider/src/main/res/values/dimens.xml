@@ -5,5 +5,5 @@
     <dimen name="interval_slider_default_thumb_pressed_size">36dp</dimen>
     <dimen name="interval_slider_default_thumb_size">28dp</dimen>
     <dimen name="interval_slider_default_touchoffset">36dp</dimen>
-    <dimen name="interval_slider_default_offset">0dp</dimen>
+    <dimen name="interval_slider_default_offset">18dp</dimen>
 </resources>
