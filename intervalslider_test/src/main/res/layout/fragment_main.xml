@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context="com.epam.android.intervalslidertest.ui.fragment.MainFragment">
+    
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="50dp" />
+
+    <com.epam.android.intervalslider.IntervalSliderView
+        xmlns:intervalslider="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        intervalslider:thumbSize="20dp"
+        intervalslider:thumbPressedSize="32dp"
+        intervalslider:thumbDrawable="@drawable/ic_android"
+        intervalslider:thumbPressedDrawable="@drawable/ic_aim"
+        android:id="@+id/interval_slider"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="10dp"
+        android:text="[]"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/interval_progress_values_text"/>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="50dp" />
+
+
+    <com.epam.android.intervalslider.IntervalSliderIntRangeView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/interval_slider_int_range"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="10dp"
+        android:text="[]"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/interval_range_values_text"/>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="50dp" />
+
+    <!-- linear -->
+    <com.epam.android.intervalslider.IntervalSliderView
+        xmlns:intervalslider="http://schemas.android.com/apk/res-auto"
+        intervalslider:backgroundDrawable="@drawable/interval_selector_background_linear"
+        intervalslider:selectionDrawable="@drawable/interval_selector_selection_linear"
+        intervalslider:offset="11dp"
+        intervalslider:thumbSize="16dp"
+        intervalslider:thumbPressedSize="22dp"
+        intervalslider:thumbDrawable="@drawable/interval_selector_thumb_circle"
+        intervalslider:thumbPressedDrawable="@drawable/interval_selector_thumb_circle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

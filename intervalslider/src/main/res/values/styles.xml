@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="IntervalSlider">
+        <item name="touchOffset">28dp</item>
+        <item name="thumbSize">28dp</item>
+        <item name="thumbPressedSize">36dp</item>
+
+        <item name="backgroundDrawable">@drawable/interval_selector_background</item>
+        <item name="selectionDrawable">@drawable/interval_selector_selection_default</item>
+        <item name="thumbDrawable">@drawable/interval_selector_thumb</item>
+        <item name="thumbPressedDrawable">@drawable/interval_selector_thumb_pressed</item>
+    </style>
+
+</resources>

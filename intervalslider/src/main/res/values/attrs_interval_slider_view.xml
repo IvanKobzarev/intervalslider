@@ -1,0 +1,13 @@
+<resources>
+    <declare-styleable name="IntervalSliderView">
+        <attr name="touchOffset" format="dimension"/>
+        <attr name="offset" format="dimension"/>
+        <attr name="thumbSize" format="dimension"/>
+        <attr name="thumbPressedSize" format="dimension"/>
+
+        <attr name="backgroundDrawable" format="integer"/>
+        <attr name="selectionDrawable" format="integer"/>
+        <attr name="thumbDrawable" format="integer"/>
+        <attr name="thumbPressedDrawable" format="integer"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="interval_slider_default_width">200dp</dimen>
+    <dimen name="interval_slider_default_height">36dp</dimen>
+    <dimen name="interval_slider_default_thumb_pressed_size">36dp</dimen>
+    <dimen name="interval_slider_default_thumb_size">28dp</dimen>
+    <dimen name="interval_slider_default_touchoffset">36dp</dimen>
+    <dimen name="interval_slider_default_offset">0dp</dimen>
+</resources>
