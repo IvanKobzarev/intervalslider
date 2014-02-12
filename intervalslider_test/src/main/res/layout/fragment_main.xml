@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:intervalslider="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,9 +12,9 @@
         android:layout_height="50dp" />
 
     <com.epam.android.intervalslider.IntervalSliderView
-        xmlns:intervalslider="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        intervalslider:offset="16dp"
         intervalslider:thumbSize="20dp"
         intervalslider:thumbPressedSize="32dp"
         intervalslider:thumbDrawable="@drawable/ic_android"
@@ -38,6 +39,7 @@
     <com.epam.android.intervalslider.IntervalSliderIntRangeView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        intervalslider:offset="16dp"
         android:id="@+id/interval_slider_int_range"/>
 
 
@@ -55,7 +57,6 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp" />
 
-    <!-- linear -->
     <com.epam.android.intervalslider.IntervalSliderView
         xmlns:intervalslider="http://schemas.android.com/apk/res-auto"
         intervalslider:backgroundDrawable="@drawable/interval_selector_background_linear"
@@ -66,6 +67,7 @@
         intervalslider:thumbDrawable="@drawable/interval_selector_thumb_circle"
         intervalslider:thumbPressedDrawable="@drawable/interval_selector_thumb_circle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/interval_slider_linear"/>
 
 </LinearLayout>

@@ -113,11 +113,7 @@ public class IntervalSliderIntRangeView extends IntervalSliderView implements In
             setMinRegionValue(previousMinRegionValue);
             setMaxRegionValue(previousMaxRegionValue);
             invalidate();
-//            return;
         }
-//
-//        this.minValue = minValue;
-//        this.maxValue = maxValue;
     }
     //endregion
 }

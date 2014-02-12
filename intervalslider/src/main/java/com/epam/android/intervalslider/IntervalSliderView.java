@@ -13,19 +13,24 @@ import android.view.View;
 
 public class IntervalSliderView extends View implements View.OnTouchListener {
 
-    public static final String BUNDLE_SUPER_INSTANCE_STATE = "super_instance_state";
+    public static final String BUNDLE_SUPER_INSTANCE_STATE = "ring_progress_super_instance_state";
     public static final String BUNDLE_INTERVAL_SLIDER_PROGRESS = "interval_slider_progress";
+    private static final boolean STATE_HANDLE = true;
+    private int[] mPreTouchDownState;
 
     private OnValueChangedListener listener;
 
+    // drawable resources
     private int backgroundDrawableResourceId = R.drawable.interval_selector_background;
     private int selectionDrawableResourceId = R.drawable.interval_selector_selection_default;
     private int thumbDrawableResourceId = R.drawable.interval_selector_thumb;
     private int thumbPressedDrawableResourceId = R.drawable.interval_selector_thumb_pressed;
 
+    // dimensions
     private int thumbSize = getContext().getResources().getDimensionPixelSize(R.dimen.interval_slider_default_thumb_size);
     private int thumbPressedSize = getContext().getResources().getDimensionPixelSize(R.dimen.interval_slider_default_thumb_pressed_size);
 
+    //drawables
     private Drawable background;
     private Drawable selection;
     private Drawable thumb;
@@ -151,10 +156,12 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        if (widthMode == MeasureSpec.EXACTLY || widthMode == MeasureSpec.AT_MOST) {
+        if (widthMode == MeasureSpec.EXACTLY) {
             retWidth = widthSize;
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            retWidth = Math.min(widthSize, getContext().getResources().getDimensionPixelSize(R.dimen.interval_slider_default_width));
         } else {
-            retWidth = getContext().getResources().getDimensionPixelSize(R.dimen.interval_slider_default_width);
+            retWidth = getContext().getResources().getDimensionPixelSize(R.dimen.interval_slider_default_width) + getPaddingLeft() + getPaddingRight();
         }
 
         if (heightMode == MeasureSpec.EXACTLY) {
@@ -168,10 +175,6 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
         setMeasuredDimension(retWidth, retHeight);
     }
 
-    int[] mPreTouchDownState;
-
-    private static final boolean STATE_HANDLE = true;
-
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         final int action = MotionEventCompat.getActionMasked(event);
@@ -179,7 +182,6 @@ public class IntervalSliderView extends View implements View.OnTouchListener {
         final int pointerCount = event.getPointerCount();
         int pointerId = event.getPointerId(pointerIndex);
 
-        Log.d("onTouch " + Utils.actionToString(action) + " (" + pointerId + ")" + pointerIndex + "/" + pointerCount);
         final int x = (int) event.getX(pointerIndex);
         final int y = (int) event.getY(pointerIndex);
 

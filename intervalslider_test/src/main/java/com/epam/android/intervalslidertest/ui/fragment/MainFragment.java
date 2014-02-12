@@ -19,6 +19,7 @@ public class MainFragment extends Fragment {
     private TextView intervalSliderProgressValuesText;
     private TextView intervalSliderIntRangeValuesText;
     private IntervalSliderIntRangeView intervalSliderIntRangeView;
+    private IntervalSliderView intervalSliderLinearView;
 
     public MainFragment() {
     }
@@ -42,7 +43,7 @@ public class MainFragment extends Fragment {
 
         intervalSliderView = (IntervalSliderView) view.findViewById(R.id.interval_slider);
         intervalSliderIntRangeView = (IntervalSliderIntRangeView) view.findViewById(R.id.interval_slider_int_range);
-
+        intervalSliderLinearView = (IntervalSliderView) view.findViewById(R.id.interval_slider_linear);
 
         intervalSliderProgressValuesText = (TextView) view.findViewById(R.id.interval_progress_values_text);
         intervalSliderIntRangeValuesText = (TextView) view.findViewById(R.id.interval_range_values_text);
@@ -51,12 +52,12 @@ public class MainFragment extends Fragment {
     }
 
     private void init() {
-        com.epam.android.intervalslider.Log.d("main-fragment init");
+        Log.d("main-fragment init");
 
         // base interval slider
         intervalSliderView.setListener(new IntervalSliderOnValueChangeListener());
-//        intervalSliderView.setMinProgress(0.1f);
-//        intervalSliderView.setMaxProgress(0.6f);
+        intervalSliderView.setMinProgress(0.1f);
+        intervalSliderView.setMaxProgress(0.6f);
 
         // int range interval slider
         intervalSliderIntRangeView.setListener(new IntervalSliderIntRangeOnValueChangeListener());
@@ -67,9 +68,14 @@ public class MainFragment extends Fragment {
                 intervalSliderIntRangeView.setRange(0, 1000);
             }
         });
-//        intervalSliderIntRangeView.setRange(0, 1000);
-//        intervalSliderIntRangeView.setMinRegionValue(100);
-//        intervalSliderIntRangeView.setMaxRegionValue(666);
+        intervalSliderIntRangeView.setRange(0, 100);
+        intervalSliderIntRangeView.setMinRegionValue(10);
+        intervalSliderIntRangeView.setMaxRegionValue(66);
+
+
+        intervalSliderLinearView.setMinProgress(0.25f);
+        intervalSliderLinearView.setMaxProgress(0.66f);
+
     }
 
     private void setIntervalRangeText(int minRegionValue, int maxRegionValue) {
